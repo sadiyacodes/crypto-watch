@@ -5,14 +5,17 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import CryptoContext from './contexts/CryptoContext.jsx'
 import 'react-alice-carousel/lib/alice-carousel.css';
+import ThemeContext from './contexts/ThemeContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-     <BrowserRouter>
+  <BrowserRouter>
+    <ThemeContext>
       <CryptoContext>
-         <App />
-       </CryptoContext>
-      </BrowserRouter>
-  </React.StrictMode>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </CryptoContext>
+    </ThemeContext>
+  </BrowserRouter>
   
 )

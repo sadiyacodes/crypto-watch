@@ -4,7 +4,6 @@ import { TrendingCoins } from '../../config/api'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { numberWithCommas } from '../../config/numberWithCommas'
-
 import AliceCarousel from 'react-alice-carousel'
 
 

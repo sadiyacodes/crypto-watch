@@ -5,11 +5,11 @@ import CoinTable from '../components/CoinTable'
 
 const HomePage = () => {
   return (
-    <div className='dark:bg-black bg-white'>
-     <Header/>
-     <Banner/>
-     <CoinTable/>
-    </div>
+    <div className="dark:bg-black bg-white">
+    <Header />
+    <Banner />
+    <CoinTable />
+  </div>
     
   )
 }

@@ -7,7 +7,7 @@ const Banner = () => {
                 }}>
 
                     <div>
-                      <h1 className='dark:text-white text-zinc-800 text-4xl md:text-6xl font-semibold'>
+                      <h1 className='bg-gradient-to-r from-fuchsia-500 to-cyan-500 bg-clip-text pb-1.5	 text-transparent text-4xl md:text-6xl font-semibold'>
                              Crypto Watch
                       </h1>
                       <p className='text-sm md:text-md dark:text-yellow-500 text-zinc-800 my-2'>

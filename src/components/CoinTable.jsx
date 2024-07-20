@@ -13,7 +13,7 @@ import { LinearProgress,
      TableContainer,
      TableHead
  } from '@mui/material'
- //import {ThemeState} from "../contexts/themeContext";
+ import { ThemeState } from "../contexts/ThemeContext";
 
 
 const CoinTable = () => {
@@ -24,7 +24,7 @@ const CoinTable = () => {
 
        const{currency, symbol} = CryptoState();
        const navigate =useNavigate();
-    //    const{theme} = ThemeState();
+       const{theme} = ThemeState();
 
     const fetchingAllCoin =async ()=>
     {
@@ -32,10 +32,8 @@ const CoinTable = () => {
             setLoading(true);
             const {data}= await axios.get(CoinList(currency));
 
-            console.log("data1 = ",data); 
             if(data)
-            { 
-              console.log("data2 = ",data);  
+            {  
               setCoinList(data);
               setLoading(false);
             }
@@ -43,7 +41,7 @@ const CoinTable = () => {
         }
         catch(error)
         {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -53,12 +51,10 @@ const CoinTable = () => {
         (coin)=> coin.name.toLowerCase().includes(searchField.toLowerCase()) || 
 coin.symbol.toLowerCase().includes(searchField.toLowerCase())
        );
-       console.log("result = ",result);
         return result;
     };
 
     useEffect(()=>{
-      console.log("xyz");
         fetchingAllCoin();
       }, [currency]);
     
@@ -188,21 +184,21 @@ coin.symbol.toLowerCase().includes(searchField.toLowerCase())
 
          {handleSearch().length >=1 ? (
                           <Pagination
-                          count ={Number(handleSearch()?.length /10).toFixed(0)}
+                          count ={Number(Number(handleSearch()?.length / 10).toFixed(0))}
                           style={{
                             display:"flex",
                             justifyContent: "center",
                             marginTop:"10px",
                             color:"white",
-                            // backgroundColor:`${theme === "dark" ? "gold" : "transparent"}`,
-                            backgroundColor: 'transparent',
+                            backgroundColor:`${theme === "dark" ? "gold" : "transparent"}`,
+                            // backgroundColor: 'transparent',
                             borderRadius : "10px",
                           }}
                           onChange={(_, value)=>{
                             setPage(value);
                             window.scroll({
                               top:400,
-                              behavior:smooth
+                              behavior:"smooth"
                             });
                           }}>
                             </Pagination>
