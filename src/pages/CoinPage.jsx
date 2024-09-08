@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import {useParams} from "react-router-dom";
 import { CryptoState } from '../contexts/CryptoContext';
-import axios from "axios";
-import {SingleCoin} from "../config/api";
 import CoinDetails from '../components/CoinDetails';
 import SideBar from '../components/SideBar';
 import {LinearProgress} from "@mui/material";
+import { functions } from '../config/appwrite';
 
 
 const CoinPage = () => {
@@ -16,18 +15,20 @@ const CoinPage = () => {
 
    const {currency, symbol} = CryptoState();
 
-
-   const fetchSingleCoin = async() =>
-   {
-     try
-       { 
-        const { data } = await axios.get(SingleCoin(id));
-        setToken(data);
-        }
-        catch(error) {
-          console.log(error);
-        }
-   };
+   const fetchSingleCoin = async () => {
+    const payload = JSON.stringify({
+      apiName: "singleCoin",
+      apiParams: {
+        coinId: id,
+      }
+    });
+    try {
+      const { responseBody } = await functions.createExecution('66a002c9002bbdfb29c9', payload);
+      setToken(JSON.parse(responseBody));
+  } catch (error) {
+    console.log(error);
+  }
+  };
 
    useEffect(()=> {
     fetchSingleCoin();

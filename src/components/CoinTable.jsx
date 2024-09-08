@@ -1,6 +1,4 @@
 import React , {useEffect ,useState } from 'react'
-import axios from 'axios'
-import { CoinList } from '../config/api'
 import { CryptoState } from '../contexts/CryptoContext'
 import { useNavigate } from 'react-router-dom'
 import { numberWithCommas } from '../config/numberWithCommas'
@@ -14,6 +12,7 @@ import { LinearProgress,
      TableHead
  } from '@mui/material'
  import { ThemeState } from "../contexts/ThemeContext";
+ import { functions } from '../config/appwrite';
 
 
 const CoinTable = () => {
@@ -26,24 +25,27 @@ const CoinTable = () => {
        const navigate =useNavigate();
        const{theme} = ThemeState();
 
-    const fetchingAllCoin =async ()=>
-    {
-        try{
-            setLoading(true);
-            const {data}= await axios.get(CoinList(currency));
+  const fetchingAllCoin = async () => {
+    const payload = JSON.stringify({
+      apiName: "coinList",
+      apiParams: {
+        currency: currency
+      }
+    });
+      try {
+        setLoading(true);
+        const {responseBody} = await functions.createExecution('66a002c9002bbdfb29c9', payload);
+        const responsePayload = JSON.parse(responseBody);
+        if(responsePayload)
+          {  
+            setCoinList(responsePayload);
+            setLoading(false);
+          }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-            if(data)
-            {  
-              setCoinList(data);
-              setLoading(false);
-            }
-
-        }
-        catch(error)
-        {
-            console.error(error);
-        }
-    };
 
     const handleSearch=()=>
     {

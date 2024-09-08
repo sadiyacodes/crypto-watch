@@ -1,23 +1,26 @@
 import React , { useEffect ,useState }from 'react'
 import { CryptoState } from '../../contexts/CryptoContext'
-import { TrendingCoins } from '../../config/api'
-import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { numberWithCommas } from '../../config/numberWithCommas'
 import AliceCarousel from 'react-alice-carousel'
+import { functions } from '../../config/appwrite'
 
 
 const Carousel = () => {
    const { currency, symbol} = CryptoState();
    const[trendingList, setTrendingList] =useState([]);
 
-    const trendingCoin = async ()=>
-    {
-        try{
-            const { data } = await axios.get(TrendingCoins(currency));
-            setTrendingList(data)
-        }
-        catch(error) {
+    const trendingCoin = async () => {
+        const payload = JSON.stringify({
+            apiName: "trendingCoins",
+            apiParams: {
+              currency: currency
+            }
+          });
+        try {
+            const { responseBody } = await functions.createExecution('66a002c9002bbdfb29c9', payload);
+            setTrendingList(JSON.parse(responseBody))
+        } catch (error) {
             console.log(error);
         }
     };

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {CryptoState} from "../contexts/CryptoContext"
-import axios from 'axios';
 import {
   Chart, 
   CategoryScale,
@@ -9,9 +8,9 @@ import {
   LineElement,
   LinearScale,
 } from "chart.js";
-import {HistoricalChart} from "../config/api";
 import { CircularProgress } from '@mui/material';
 import {Line} from "react-chartjs-2";
+import { functions } from '../config/appwrite';
 
 Chart.register(
   CategoryScale,
@@ -24,23 +23,28 @@ Chart.register(
 
 const CoinDetails = ({ token }) => {
   const [chartData, setChartData] = useState();
-  const[days, setDays]= useState();
+  const[days, setDays]= useState(1);
   const{currency}= CryptoState();
-   
-  const fetchGraphData = async()=>
-  {
-    try{
-          if(token)
-          {
-            const {data}=await axios.get(HistoricalChart(token?.id, days, currency));
-
-            setChartData(data?.prices);
-          }
-    }
-    catch(error)
-    {
-      console.error(error);
-    }
+  
+  const fetchGraphData = async () => {
+    const payload = JSON.stringify({
+      apiName: "historicalChart",
+      apiParams: {
+        coinId: token?.id,
+        currency: currency,
+        days: days
+      }
+    });
+    try {
+      if(token)
+        {
+          const {responseBody} = await functions.createExecution('66a002c9002bbdfb29c9', payload);
+          const responsePayload = JSON.parse(responseBody);
+          setChartData(responsePayload?.prices);
+        }
+  } catch (error) {
+    console.error(error);
+  }
   };
 
   useEffect(()=>{
